@@ -1,12 +1,15 @@
 package dkkovalev.com.streamapp;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +19,11 @@ import java.util.Collections;
  */
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> implements CustomItemTouchHelperCallback {
 
-    private ArrayList<String> testList;
+    private ArrayList<TopChannelsModel.Top> twitchTopGamesList;
     private Context context;
 
-    public CustomRecyclerAdapter(Context context, ArrayList<String> testList) {
-        this.testList = testList;
+    public CustomRecyclerAdapter(Context context, ArrayList<TopChannelsModel.Top> twitchTopGamesList) {
+        this.twitchTopGamesList = twitchTopGamesList;
         this.context = context;
     }
 
@@ -36,18 +39,21 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     @Override
     public void onBindViewHolder(CustomRecyclerAdapter.ViewHolder holder, int position) {
 
-        holder.test.setText(testList.get(position));
-
+        TopChannelsModel.Top top = twitchTopGamesList.get(position);
+        Picasso.with(context)
+                .load(Uri.parse(top.getGame().getBox().getLarge()))
+                .fit()
+                .into(holder.thumbnail);
     }
 
     @Override
     public int getItemCount() {
-        return testList.size();
+        return twitchTopGamesList.size();
     }
 
     @Override
     public boolean onItemMove(int from, int to) {
-        Collections.swap(testList, from, to);
+        Collections.swap(twitchTopGamesList, from, to);
 
         notifyItemMoved(from, to);
         return true;
@@ -55,21 +61,18 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
     @Override
     public void onItemDismiss(int pos) {
-        testList.remove(pos);
+        twitchTopGamesList.remove(pos);
         notifyItemRemoved(pos);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private Context context;
         private ImageView thumbnail;
-        private TextView test;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            //thumbnail = (ImageView)itemView.findViewById(R.id.thumbnail);
-            test = (TextView) itemView.findViewById(R.id.test);
+            thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
         }
     }
 }
