@@ -36,10 +36,6 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (savedInstanceState != null) {
-            tops = (ArrayList<TopChannelsModel.Top>) savedInstanceState.getSerializable("tops");
-        }
-
         View view = inflater.inflate(R.layout.fragment_twitch_top_games, container, false);
         setupUI(view);
 
@@ -55,6 +51,17 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
         if (presenter == null) {
             presenter = Presenter.getInstance();
             presenter.attachView(this);
+        }
+
+        if (savedInstanceState != null) {
+            tops = (ArrayList<TopChannelsModel.Top>) savedInstanceState.getSerializable("tops");
+            customRecyclerAdapter = new CustomRecyclerAdapter(getActivity(), tops);
+            twitchTopGamesView.setAdapter(customRecyclerAdapter);
+
+            ItemTouchHelper.Callback callback = new CustomItemTouchHelper(customRecyclerAdapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(twitchTopGamesView);
+        } else {
             presenter.showListOfTopGames();
         }
 
