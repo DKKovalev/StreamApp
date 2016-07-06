@@ -46,10 +46,8 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (presenter == null) {
-            presenter = Presenter.getInstance();
-            presenter.attachView(this);
-        }
+        presenter = Presenter.getInstance();
+        presenter.attachView(this);
 
         if (savedInstanceState != null) {
             tops = (ArrayList<TopChannelsModel.Top>) savedInstanceState.getSerializable("tops");
@@ -57,17 +55,8 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
         } else {
             tops = presenter.fetchTopGames();
         }
+
         presenter.showListOfTopGames(tops);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -89,12 +78,6 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.attachView(this);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
@@ -107,8 +90,10 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+
     }
 
     private void setupUI(View view) {
@@ -120,6 +105,4 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
             twitchTopGamesView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         }
     }
-
-
 }
