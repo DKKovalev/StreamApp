@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +62,10 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
     public void onItemDismiss(int pos) {
         twitchTopGamesList.remove(pos);
         notifyItemRemoved(pos);
+    }
+
+    public ArrayList<TopChannelsModel.Top> getTwitchTopGamesList() {
+        return twitchTopGamesList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

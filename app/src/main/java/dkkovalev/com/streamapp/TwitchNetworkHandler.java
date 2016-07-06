@@ -13,6 +13,8 @@ import retrofit2.Response;
  */
 public class TwitchNetworkHandler extends RetrofitHandler {
 
+    private static final String TAG = "TWITCH_RETROFIT_ERROR";
+
     private TwitchView twitchView;
 
     public TwitchNetworkHandler(TwitchView twitchView) {
@@ -34,10 +36,9 @@ public class TwitchNetworkHandler extends RetrofitHandler {
 
             @Override
             public void onFailure(Call<TopChannelsModel> call, Throwable t) {
-                Log.i("TAG", t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
-
 
         return topList;
     }

@@ -1,11 +1,12 @@
 package dkkovalev.com.streamapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by d.kovalev on 15.06.2016.
  */
-public class TopChannelsModel {
+public class TopChannelsModel implements Serializable {
 
     private ArrayList<Top> top;
 
@@ -21,7 +22,7 @@ public class TopChannelsModel {
         return top;
     }
 
-    public class Top {
+    public class Top implements Serializable {
         private int viewers;
         private Game game;
 
@@ -42,7 +43,7 @@ public class TopChannelsModel {
         }
     }
 
-    public class Game {
+    public class Game implements Serializable {
         private String name;
         private Box box;
 
@@ -63,7 +64,7 @@ public class TopChannelsModel {
         }
     }
 
-    public class Box {
+    public class Box implements Serializable {
         private String large;
         private String medium;
         private String small;

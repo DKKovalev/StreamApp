@@ -8,7 +8,13 @@ import dkkovalev.com.streamapp.TwitchView;
  */
 public class Presenter extends AbstractPresenter<TwitchView> {
 
+    private static Presenter instance = new Presenter();
+
     private TwitchNetworkHandler twitchNetworkHandler;
+
+    public static Presenter getInstance(){
+        return instance;
+    }
 
     public void showListOfTopGames() {
 
