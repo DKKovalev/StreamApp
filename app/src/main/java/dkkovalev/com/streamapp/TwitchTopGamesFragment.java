@@ -39,8 +39,6 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
         View view = inflater.inflate(R.layout.fragment_twitch_top_games, container, false);
         setupUI(view);
 
-        Log.i(TAG, "onCreateView");
-
         return view;
     }
 
@@ -55,30 +53,21 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
 
         if (savedInstanceState != null) {
             tops = (ArrayList<TopChannelsModel.Top>) savedInstanceState.getSerializable("tops");
-            customRecyclerAdapter = new CustomRecyclerAdapter(getActivity(), tops);
-            twitchTopGamesView.setAdapter(customRecyclerAdapter);
 
-            ItemTouchHelper.Callback callback = new CustomItemTouchHelper(customRecyclerAdapter);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-            itemTouchHelper.attachToRecyclerView(twitchTopGamesView);
         } else {
-            presenter.showListOfTopGames();
+            tops = presenter.fetchTopGames();
         }
-
-        Log.i(TAG, "onViewCreated");
+        presenter.showListOfTopGames(tops);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //setRetainInstance(true);
-        Log.i(TAG, "onActivityCreated");
     }
 
     @Override
@@ -103,27 +92,23 @@ public class TwitchTopGamesFragment extends Fragment implements TwitchView {
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
-        Log.i(TAG, "onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        Log.i(TAG, "onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         presenter.detachView();
-        Log.i(TAG, "onDetach");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG, "onStop");
     }
 
     private void setupUI(View view) {

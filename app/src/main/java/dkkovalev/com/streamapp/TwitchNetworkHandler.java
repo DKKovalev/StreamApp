@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by d.kovalev on 15.06.2016.
@@ -26,19 +30,17 @@ public class TwitchNetworkHandler extends RetrofitHandler {
         final ArrayList<TopChannelsModel.Top> topList = new ArrayList<>();
 
         RESTMethods restMethods = setupRest(TWITCH_BASE_KRAKEN_URL).create(RESTMethods.class);
-        Call<TopChannelsModel> call = restMethods.twitchGetTop(30);
-        call.enqueue(new Callback<TopChannelsModel>() {
-            @Override
-            public void onResponse(Call<TopChannelsModel> call, Response<TopChannelsModel> response) {
-                twitchView.showCurrentTopGames(response.body().getTopList());
-                topList.addAll(response.body().getTopList());
-            }
+        Observable<TopChannelsModel> call = restMethods.twitchGetTop(30);
 
-            @Override
-            public void onFailure(Call<TopChannelsModel> call, Throwable t) {
-                Log.i(TAG, t.getMessage());
-            }
-        });
+        call.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<TopChannelsModel>() {
+                    @Override
+                    public void call(TopChannelsModel topChannelsModel) {
+                        twitchView.showCurrentTopGames(topChannelsModel.getTopList());
+                        topList.addAll(topChannelsModel.getTopList());
+                    }
+                });
 
         return topList;
     }
