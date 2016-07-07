@@ -3,6 +3,7 @@ package dkkovalev.com.streamapp;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,11 @@ import java.util.Collections;
  */
 public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder> implements CustomItemTouchHelperCallback {
 
+    private static final String TAG = CustomRecyclerAdapter.class.getSimpleName();
+
     private ArrayList<TopChannelsModel.Top> twitchTopGamesList;
     private Context context;
+    private OnRecyclerItemClickListener onRecyclerItemClickListener;
 
     public CustomRecyclerAdapter(Context context, ArrayList<TopChannelsModel.Top> twitchTopGamesList) {
         this.twitchTopGamesList = twitchTopGamesList;
@@ -68,7 +72,11 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
         return twitchTopGamesList;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnRecyclerItemClickListener(OnRecyclerItemClickListener onRecyclerItemClickListener) {
+        this.onRecyclerItemClickListener = onRecyclerItemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView thumbnail;
 
@@ -76,6 +84,22 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
             super(itemView);
 
             thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
+            itemView.setOnClickListener(this);
         }
+
+        public ImageView getThumbnail() {
+            return thumbnail;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onRecyclerItemClickListener != null) {
+                onRecyclerItemClickListener.onClick(ViewHolder.this, v, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnRecyclerItemClickListener {
+        void onClick(ViewHolder viewHolder, View view, int pos);
     }
 }

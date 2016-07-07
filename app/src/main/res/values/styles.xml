@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomStreamAppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:colorBackground">@color/background_material_dark</item>
+        <item name="colorAccent">@color/material_grey_50</item>
+        <item name="android:textColorPrimary">@color/material_grey_300</item>
+        <item name="colorPrimary">@color/material_grey_800</item>
+        <item name="android:textColorSecondary">@color/material_grey_50</item>
+    </style>
+
 </resources>

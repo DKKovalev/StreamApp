@@ -2,6 +2,7 @@ package dkkovalev.com.streamapp.Presentation;
 
 import java.util.ArrayList;
 
+import dkkovalev.com.streamapp.CustomRecyclerAdapter;
 import dkkovalev.com.streamapp.TopChannelsModel;
 import dkkovalev.com.streamapp.TwitchNetworkHandler;
 import dkkovalev.com.streamapp.TwitchView;
@@ -11,14 +12,12 @@ import dkkovalev.com.streamapp.TwitchView;
  */
 public class Presenter extends AbstractPresenter<TwitchView> {
 
-    private static Presenter instance = new Presenter();
-
     public static Presenter getInstance() {
+        Presenter instance = new Presenter();
         return instance;
     }
 
     public void showListOfTopGames(ArrayList<TopChannelsModel.Top> topArrayList) {
-
         if (isViewAttached()) {
             TwitchView twitchView = getView();
             if (twitchView != null) {
@@ -28,14 +27,21 @@ public class Presenter extends AbstractPresenter<TwitchView> {
     }
 
     public ArrayList<TopChannelsModel.Top> fetchTopGames() {
-        TwitchNetworkHandler twitchNetworkHandler;
         if (isViewAttached()) {
             TwitchView twitchView = getView();
             if (twitchView != null) {
-                twitchNetworkHandler = new TwitchNetworkHandler(twitchView);
-                return twitchNetworkHandler.getCurrentTopGames();
+                return new TwitchNetworkHandler(twitchView).getCurrentTopGames();
             }
         }
         return null;
+    }
+
+    public void showFragmentOfTopStreams(CustomRecyclerAdapter.ViewHolder viewHolder, int pos) {
+        if (isViewAttached()) {
+            TwitchView twitchView = getView();
+            if (twitchView != null) {
+                twitchView.openCurrentTopStreamsByGameFragment(viewHolder, pos);
+            }
+        }
     }
 }

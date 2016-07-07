@@ -7,4 +7,6 @@ import java.util.ArrayList;
  */
 public interface TwitchView {
     void showCurrentTopGames(ArrayList<TopChannelsModel.Top> topArrayList);
+
+    void openCurrentTopStreamsByGameFragment(CustomRecyclerAdapter.ViewHolder viewHolder, int pos);
 }
